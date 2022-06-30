@@ -1,0 +1,65 @@
+---
+title: "Tarea1 - Tidyverse"
+author: "Yimmy Eman"
+date: '2022-06-27'
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+## Pregunta 1
+Si ejecutas ggplot(data = mpg), ¿qué observas?
+
+```{r}
+ggplot(data = mpg)
+```
+R: Totalmente en blanco!
+
+## Pregunta 2
+Indica el número de filas que tiene el data frame mpg. ¿Qué significa cada fila?
+
+R: 234 filas
+
+## Pregunta 3
+Indica el número de columnas que tiene el data frame mpg. ¿Qué significa cada columna?
+
+R: 11 columnas
+
+## Pregunta 4
+Observa la variable drv del data frame. ¿Qué describe? Recuerda que puedes usar la instrucción ?mpg para
+consultarlo directamente en R.
+
+```{r}
+?mpg
+```
+
+R: el tipo de tren de transmisión, donde f = tracción delantera, r = tracción trasera, 4 = 4wd
+
+## Pregunta 5
+Realiza un scatterplot de la variable hwy vs cyl. ¿Qué observas?
+
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = hwy, y = cyl))
+```
+
+## Pregunta 6
+Realiza un scatterplot de la variable cty vs cyl. ¿Qué observas?
+
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = cty, y = cyl))
+```
+
+## Pregunta 7
+Realiza un scatterplot de la variable class vs drv. ¿Qué observas? ¿Es útil este diagrama? ¿Por qué?
+
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = class, y = drv))
+```
+
+
