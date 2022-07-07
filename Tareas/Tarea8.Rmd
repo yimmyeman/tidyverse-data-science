@@ -1,0 +1,121 @@
+---
+title: "Tarea8"
+author: "Yimmy Eman"
+date: '2022-07-07'
+output: pdf_document
+---
+
+```{r}
+rm(list = ls())
+library(tidyverse)
+library(nycflights13)
+
+df <- flights
+```
+
+## Pregunta 1
+
+Encuentra todos los vuelos que llegaron más de una hora tarde de lo previsto.
+
+```{r}
+#dep_delay, arr_delay
+#Retrasos de salida y llegada, en minutos. Los tiempos negativos representan #salidas/llegadas anticipadas.
+
+
+filter(df, arr_delay > 60)
+```
+
+## Pregunta 2
+Encuentra todos los vuelos que volaron hacia San Francisco (aeropuertos SFO y OAK)
+
+```{r}
+filter(df, dest == "SFO" | dest == "OAK")
+```
+
+## Pregunta 3
+
+Encuentra todos los vuelos operados por United American (‘UA) o por American Airlines (AA)
+
+```{r}
+filter(df, carrier == "UA" | carrier == "AA")
+```
+
+
+## Pregunta 4
+
+Encuentra todos los vuelos que salieron los meses de primavera (Abril, Mayo y Junio)
+
+```{r}
+filter(df, month == 4 | month == 5 | month  == 6)
+```
+
+## Pregunta 5
+
+Encuentra todos los vuelos que llegaron más de una hora tarde, pero salieron con menos de una hora de retraso.
+
+```{r}
+filter(df, arr_delay > 60 & dep_delay < 60)
+```
+
+
+## Pregunta 6
+
+Encuentra todos los vuelos que salieron con más de una hora de retraso, pero consiguieron llegar con menos de 30 minutos de retraso (el avión aceleró en el aire)
+
+```{r}
+filter(df, dep_delay > 60, arr_delay < 30)
+```
+
+
+## Pregunta 7
+
+Encuentra todos los vuelos que salen entre medianoche y las 7 de la mañana (vuelos nocturnos).
+
+```{r}
+filter(df, hour >= 0, hour < 7)
+```
+
+
+## Pregunta 8
+
+Investiga el uso de la función between() de dplyr. ¿Qué hace? ¿Puedes usarlo para resolver la sintaxis necesaria para responder alguna de las preguntas anteriores?
+
+Este es un atajo para x >= izquierda y x <= derecha, implementado eficientemente en C++ para valores locales y traducido al SQL apropiado para tablas remotas.
+
+## Pregunta 9
+
+¿Cuántos vuelos tienen un valor desconocido de dep_time?
+
+```{r}
+filter(df, is.na(dep_time))
+```
+
+
+## Pregunta 10
+
+¿Qué variables del dataset contienen valores desconocidos? ¿Qué representan esas filas donde faltan los
+datos?
+
+Los campos desconocidos son fechas de salida/llegada así como retraso de salida/llegada. Puede que se tratede vuelos cancelados, sobre todo por las cifras que manejamos (unos 8000 vuelos anuales)2
+
+
+## Pregunta 11
+
+Ahora vas a sorprenderte con la magia oscura. . . Contesta qué dan las siguientes condiciones booleanas
+- NAˆ0
+- NA|TRUE
+- FALSE&NA
+Intenta establecer la regla general para saber cuando es o no es NA (cuidado con NA*0)
+
+```{r}
+NA ^ 0
+```
+```{r}
+NA | TRUE
+```
+
+```{r}
+FALSE & NA
+```
+
+TRUEesun absorbente de la DISYUNCION  y FALSE de la CONJUCION.
