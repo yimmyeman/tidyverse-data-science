@@ -14,8 +14,11 @@ library(tidyverse)
 Toma el siguiente fragmento de código y di qué está mal. ¿Por qué no aparecen pintados los puntos de color
 verde?
 
+```{r}
 ggplot(data = mpg) +
 geom_point(mapping = aes(x = displ, y = hwy, color = "green"))
+```
+
 
 R: El parametro color debe estar fuera de aes()
 
@@ -27,27 +30,74 @@ geom_point(mapping = aes(x = displ, y = hwy), color = "green")
 ## Pregunta 2
 Toma el dataset de mpg anterior y di qué variables son categóricas.
 
+RESP:
+
+- manufacturer
+- model 
+- trans
+- drv
+- fl
+- class
 
 ## Pregunta 3
 Toma el dataset de mpg anterior y di qué variables son continuas.
+
+- displ
+- year
+- cyl
+- cty
+- hwy
 
 
 ## Pregunta 4
 Dibuja las variables continuas con color, tamaño y forma respectivamente.
 
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = model, shape = class), shape = 21, size = 3, color = "yellow", fill = "blue")
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = year, y = model, shape = class), shape = 21, size = 3, color = "yellow", fill = "blue")
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = cyl, y = model, shape = class), shape = 21, size = 3, color = "yellow", fill = "blue")
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = cty, y = model, shape = class), shape = 21, size = 3, color = "yellow", fill = "blue")
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = hwy, y = model, shape = class), shape = 21, size = 3, color = "yellow", fill = "blue")
+```
+
 
 ## Pregunta 5
 ¿En qué se diferencian las estéticas para variables continuas y categóricas?
 
+Unas representan el valor de la variable y otras únicamente la categoría a la cual pertenecen.
 
 ## Pregunta 6
 ¿Qué ocurre si haces un mapeo de la misma variable a múltiples estéticas?
+
+Se combinan los mappings (tamaño, forma, color. . . )
 
 
 ## Pregunta 7
 Vamos a conocer una estética nueva llamada stroke. ¿Qué hace? ¿Con qué formas funciona bien?
 
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = hwy, y = model, shape = class), shape = 21, stroke = 3, size = 3, color = "yellow", fill = "blue")
+```
+Crea un relleno alrededor de la figura
 
 ## Pregunta 8
 ¿Qué ocurre si haces un mapeo de una estética a algo que no sea directamente el nombre de una variable
 (por ejemplo aes(color = displ < 4)?
+
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = displ < 4))
+```
+
+Devuelve una visualizacion binaria

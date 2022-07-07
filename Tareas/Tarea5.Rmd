@@ -1,0 +1,53 @@
+---
+title: "Tarea5"
+author: "Yimmy Eman"
+date: '2022-07-07'
+output: pdf_document
+---
+
+```{r}
+library(tidyverse)
+```
+
+# Pregunta 1
+
+```{r}
+?geom_col
+?geom_bar
+```
+
+Description
+There are two types of bar charts: geom_bar() and geom_col(). geom_bar() makes the height of the bar proportional to the number of cases in each group (or if the weight aesthetic is supplied, the sum of the weights). If you want the heights of the bars to represent values in the data, use geom_col() instead. geom_bar() uses stat_count() by default: it counts the number of cases at each x position. geom_col() uses stat_identity(): it leaves the data as is.
+
+# Pregunta 2
+
+
+# Pregunta 3
+
+```{r}
+?stat_smooth
+```
+
+Aesthetics
+geom_smooth() understands the following aesthetics (required aesthetics are in bold):
+
+- x
+- y
+- alpha
+- colour
+- fill
+- group
+- linetype
+- size
+- weight
+- ymax
+- ymin
+
+# Pregunta 4
+
+Si no lo configuramos group = 1, entonces la proporción no se calcula para las categorías del eje X.
+
+
+# Pregunta 5
+
+Siempre que uses y = ..prop..debes añadir también group = 1.2

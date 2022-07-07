@@ -1,0 +1,71 @@
+---
+title: "Tarea3"
+author: "Yimmy Eman"
+date: '2022-07-05'
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+## Pregunta 1
+¿Qué ocurre si hacemos un facet de una variable continua?
+
+R: El grafico puede tornarse muy grande...
+
+## Pregunta 2
+
+¿Qué significa si alguna celda queda vacía en el gráfico `facet_grid(drv~cyl)`? 
+
+¿Qué relación guardan esos huecos vacíos con el gráfico siguiente?
+
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x=drv, y = cyl)) +
+  facet_grid(drv~cyl)
+```
+R: Ambos quedan vacios. Tanto fila como columna.
+
+## Pregunta 3
+¿Qué gráficos generan las siguientes dos instrucciones? ¿Qué hace el punto? ¿Qué diferencias hay de escribir la variable antes o después de la vírgula?
+
+
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x=displ, y = hwy)) + facet_grid(.~cyl)
+
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x=displ, y = hwy)) + facet_grid(drv~.)
+```
+R: El primero filtrado por columnas y el segudo por filas.
+
+
+## Pregunta 4
+El primer facet que hemos pintado era el siguiente:
+¿Qué ventajas crees que tiene usar facets en lugar de la estética del color? ¿Qué desventajas? ¿Qué cambiaría si tu dataset fuera mucho más grande?
+
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes(x = displ, y = hwy)) + facet_wrap(~class, nrow = 3)
+
+```
+R: Al usar colores puede generar problemas de entendimiento del gráfico  si el dataset es muy grande. Los subplots en cambio permiten al lector tener un panorama visual mas entendible y agradable para comprender por categoría.
+
+## Pregunta 5
+Investiga la documentación de ?facet_wrap y contesta a las siguientes preguntas: 
+
+- ¿Qué hace el parámetro nrow?
+- ¿Y el parámetro ncol?
+- ¿Qué otras opciones sirven para controlar el layout de los paneles individuales? 
+- ¿Por qué `facet_grid()` no tiene los parámetros de `nrow` ni de `ncol`?
+
+R: En elcaso del grid, como las variables indican automáticamente los niveles de las filas y de las columnas, no tienesentido añadirle dichas opciones de visualización gráfica
+
+## Pregunta 6
+
+Razona la siguiente afirmación:
+Cuando representemos un facet con `facet_grid()` conviene poner la variable con más niveles únicos en las columnas.
+
+R: Los gráficos tienden a ser más anchos que altos (la proporción estándar es de 16:9 o formato panorámico)así que si una variable tiene más niveles que otra, conviene que esté en la dimensión más grande del gráfico,es decir, la anchura

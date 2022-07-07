@@ -1,0 +1,140 @@
+---
+title: "Tarea4"
+author: "Yimmy Eman"
+date: '2022-07-07'
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r}
+library(tidyverse)
+```
+
+
+## Pregunta 1
+
+Ejecuta este código en tu cabeza y predice el resultado. Luego ejecutalo en R y comprueba tu hipótesis:
+
+```{r}
+ggplot(data = mpg, mapping = aes(x=displ, y = hwy,color = drv)) +
+  geom_point() +
+  geom_smooth(se = F)
+```
+
+## Pregunta 2
+
+¿Qué hace el parámetro show.legend = F? ¿Qué pasa si lo eliminamos? ¿Cuando lo añadirías y cuando lo
+quitarías?
+
+R: Muestra u oculta la leyenda.
+
+```{r}
+ggplot(data = mpg, mapping = aes(x=displ, y = hwy, color = drv)) +
+  geom_point(show.legend = F) +
+  geom_smooth(se = F, show.legend = F)
+```
+
+## Pregunta 3
+
+¿Qué hace el parámetro se de la función geom_smooth()? ¿Qué pasa si lo eliminamos? ¿Cuando lo añadirías y cuando lo quitarías?
+
+R: Se elimina la franja que rodea la líneas, se le llama error estándar.
+
+## Pregunta 4
+
+Describe qué hacen los dos siguientes gráficos y di si serán igual y diferente. Justifica tu respuesta.
+
+R: Son los mismos gráficos, simplemente se reduce la duplicidad del código.
+```{r}
+ggplot(data = mpg, mapping =aes(x=displ, y = hwy)) +
+  geom_point()+
+  geom_smooth()
+
+ggplot(data = mpg) + 
+  geom_point(mapping =aes(x=displ, y = hwy)) +
+  geom_smooth(mapping =aes(x=displ, y = hwy))
+```
+
+## Pregunta 5
+
+Reproduce el código deRque te genera el siguiente gráfico.
+
+```{r}
+ggplot(data = mpg, mapping =aes(x=displ, y = hwy)) +
+  geom_point() +
+  geom_smooth(se=F)
+
+```
+
+
+## Pregunta 6
+
+Reproduce el código deRque te genera el siguiente gráfico.
+
+```{r}
+ggplot(data = mpg, mapping = aes(x=displ, y= hwy)) +
+  geom_point() +
+  geom_smooth(mapping = aes(group = drv), se = F)
+  
+```
+
+## Pregunta 7
+
+Reproduce el código deRque te genera el siguiente gráfico.
+
+```{r}
+ggplot(data = mpg, mapping = aes(x=displ, y= hwy, color = drv)) +
+  geom_point() +
+  geom_smooth(mapping = aes(group = drv), se = F)
+```
+
+## Pregunta 8
+
+Reproduce el código deRque te genera el siguiente gráfico.
+
+```{r}
+ggplot(data = mpg, mapping = aes(x=displ, y= hwy)) +
+  geom_point(mapping = aes(col = drv, shape = drv)) +
+  geom_smooth(se = F)
+```
+
+## Pregunta 9
+
+Reproduce el código de  R te genera el siguiente gráfico.
+
+
+```{r}
+ggplot(data = mpg, mapping = aes(x=displ, y= hwy)) +
+  geom_point(mapping = aes(col = drv, shape = drv)) +
+  geom_smooth(mapping = aes(group = drv, linetype = drv), se = F)
+```
+
+## Pregunta 10
+
+¡Este va para nota!Reproduce el código de R que te genera el siguiente gráfico. Investiga algunos parámetros adicionales que teharán falta de ggplot2 como stroke entre otros
+
+```{r}
+ggplot(data = mpg, mapping = aes(x=displ, y= hwy)) +
+  geom_point(mapping = aes(fill = drv), shape = 23, col = "white", stroke = 3, size = 5) 
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

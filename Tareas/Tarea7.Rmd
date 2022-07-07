@@ -1,0 +1,66 @@
+---
+title: "Tarea7"
+author: "Yimmy Eman"
+date: '2022-07-07'
+output: pdf_document
+---
+
+# Pregunta 1
+
+¿Por qué no funciona el siguiente código?
+
+```{r}
+my_variable <- 5
+# my.variable
+```
+
+Se está intenando acceder con, devería ser `my_variable`.
+
+# Pregunta 2
+¿Por qué no funciona el siguiente código?
+
+my_variable <- 5
+my_varIable
+
+R: Por la I, debería ser i.
+
+# Pregunta 3
+
+¿Por qué no funciona el siguiente código?
+
+my_variable <- 5
+my_var1able
+
+R: por el 1.
+
+
+# Pregunta 4
+
+¿Por qué no funciona el siguiente código?1
+my_variable -> 5
+my_variable
+
+R: La asignación de la variable debería hacerse (my_variable <- 5)
+
+# Pregunta 5
+
+Las siguientes líneas pueden tener algun error de escritura. Localízalo y corrígelo para que funcione correctamente.
+
+librari(tidyverse)
+ggplot(dati = mpg)+ 
+  geom_puint(mapping =aes(x = displ, y = hwy))
+  fliter(mpg, cyl=6)
+  filter(diamond, caret>4)
+  
+```{r}
+library(tidyverse)
+ggplot(data = mpg) + 
+  geom_point(mapping =aes(x = displ, y = hwy)) 
+
+filter(mpg, cyl == 6)
+filter(diamonds, carat > 4)
+```
+
+## Pregunta 6
+
+Vamos a por un poco de magia oscura. Prueba la combinaciónAlt + Shift + K. ¿Qué hace? ¿Útil eh?SoluciónTe mola, ¿eh?2

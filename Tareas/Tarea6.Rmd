@@ -1,0 +1,131 @@
+---
+title: "Tarea6"
+author: "Yimmy Eman"
+date: '2022-07-07'
+output: pdf_document
+---
+
+```{r}
+library(tidyverse)
+```
+
+## Pregunta 1
+
+El siguiente gráfico que genera el código deRes correcto, pero puede mejorarse. ¿Qué cosas añadirías paramejorarlo?
+
+```{r}
+ggplot(data = mpg, mapping =aes(x = cty, y = hwy )) +
+  geom_point()
+```
+
+Solución 
+
+El gráfico es muy pobre, tiene los puntos uno encima de otros (estaría mejor agitado con jitter) y seguro quecon una capageom_smoothveríamos una tendencia en los mismos. Más adelante verás más cosas acerca deeste gráfico y acabarás sacando una conclusión por ti mismo.
+
+
+## Pregunta 2
+
+Investiga la documentación degeom_jitter(). ¿Qué parámetros controlan la cantidad de ruido aleatorio(jitter)?
+
+SoluciónLa agitación (jitter) se controla por:
+
+- width: Amount of vertical and horizontal jitter. The jitter is added in both positive and negativedirections, so the total spread is twice the value specified here. If omitted, defaults to 40% of theresolution of the data: this means the jitter values will occupy 80% of the implied bins. Categoricaldata is aligned on the integers, so a width or height of 0.5 will spread the data so it’s not possible tosee the distinction between the categories.
+
+- height: Amount of vertical and horizontal jitter. The jitter is added in both positive and negativedirections, so the total spread is twice the value specified here. If omitted, defaults to 40% of theresolution of the data: this means the jitter values will occupy 80% of the implied bins. Categoricaldata is aligned on the integers, so a width or height of 0.5 will spread the data so it’s not possible tosee the distinction between the categories.
+
+
+## Pregunta 3
+
+Compara las funcionesgeom_jittercontrageom_county busca semejanzas y diferencias entre ambas.
+
+Solución
+
+- geom_pointse puede usar para hacer puntos más grandes de forma proporcional al número de obser-vaciones de cada uno.
+
+- geom_jitteragita los datos para que todos aparezcan visibles en lugar de alineados en una cuadrícula.1
+
+
+## Pregunta 4
+
+¿Cuál es el valor por defecto del parámetropositionde ungeom_boxplot? Usa el dataset dediamondsodempgpara hacer una visualización que lo demuestre.
+
+Solución
+
+El valor por defecto, según la documentación de R, es position = "dodge"
+
+
+```{r}
+
+ggplot(data = mpg, mapping = aes(x = class, y = hwy)) +
+  geom_boxplot(position = "dodge")
+```
+
+
+## Pregunta 5
+
+Convierte un diagrama de barras apilado en un diagrama de sectores o de tarta usando la funcióncoord_polar().
+
+
+```{r}
+ggplot(data = mpg) +
+  geom_bar(mapping = aes(x =class, fill = hwy)) +
+  theme(aspect.ratio = 1) +
+  labs(x = NULL, y = NULL) +
+  coord_polar()
+```
+## Pregunta 6
+
+¿Qué hace la funciónlabs()? Lee la documentación y explícalo correctamente.
+
+Solución
+
+Sirven para modificar el título (title, caption y subtitle), el nombre de los ejes (x e y) y la leyenda del plot.
+
+
+
+## Pregunta 7
+
+¿En qué se diferencian las funcionescoord_quickmap()ycoord_map()?
+
+Solución
+
+- coord_mapprojects a portion of the earth, which is approximately spherical, onto a flat 2D plane usingany projection defined by themapprojpackage. Map projections do not, in general, preserve straightlines, so this requires considerable computation.
+
+- coord_quickmapis a quick approximation that does preserve straight lines. It works best for smallerareas closer to the equator
+
+## Pregunta 8
+
+Investiga las coordenadascoord_fixed()e indica su función.
+
+Solución
+
+Son coordenadas cartesianas con aspect ratio fijo.
+
+A fixed scale coordinate system forces a specified ratio between the physical representation of data units onthe axes. The ratio represents the number of units on the y-axis equivalent to one unit on the x-axis. Thedefault,ratio = 1, ensures that one unit on the x-axis is the same length as one unit on the y-axis. Ratioshigher than one make units on the y axis longer than units on the x-axis, and vice versa. This is similar toeqscplot, but it works for all types of graphics.
+
+
+## Pregunta 9
+
+Investiga la geometría de la función
+
+geom_abline(),geom_vline() y geom_hline() e indica su función respectivamente.
+
+Solución
+
+Sirve para representar rectas en el plano:
+
+These geoms add reference lines (sometimes called rules) to a plot, either horizontal, vertical, or diagonal(specified by slope and intercept). These are useful for annotating plots.
+
+## Pregunta 10
+
+¿Qué nos indica el gráfico siguiente acerca de la relación entre el consumo en ciudad y en autopista del dataset de mpg?
+
+
+```{r}
+ggplot(data = mpg, mapping =aes(x = cty, y = hwy )) +
+  geom_point() +
+  geom_abline() +
+  coord_fixed()
+```
+
+La relación del consumo en ciudad y autopista es lineal: si un coche consume más por autopista, es normal que también consuma más por ciudad. El aspect ratio fixed nos ayuda en la representación para no confundirnos y pensar que una variable crece más rápida que la otra en el mismo. Además, si nos fijamos en el gráfico,vemos que los puntos están por encima de la recta y=x, por tanto concluimos que el número de millas que podemos hacer en autopista con un galón de combustible es siempre superior al número de millas que haremos con ese mismo galón en ciudad (es decir, consumimos menos en autopista que en ciudad).
