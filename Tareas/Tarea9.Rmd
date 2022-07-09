@@ -1,0 +1,108 @@
+---
+title: "Tarea9"
+author: "Yimmy Eman"
+date: '2022-07-08'
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(nycflights13)
+```
+
+# Pregunta 1
+
+Piensa cómo podrías usar la función arrange() para colocar todos los valores NA al inicio. Pista: puedes la función is.na() en lugar de la función desc() como argumento de arrange.
+
+```{r}
+arrange(flights, !is.na(flights))
+```
+
+
+# Pregunta 2
+
+Ordena los vuelos de flights para encontrar los vuelos más retrasados en la salida. ¿Qué vuelos fueron los que salieron los primeros antes de lo previsto?
+
+```{r}
+arrange(flights, desc(dep_delay))[1,] # Más retrasado
+arrange(flights, dep_delay)[1,] # Menos retrasado
+```
+
+# Pregunta 3
+
+Ordena los vuelos de flights para encontrar los vuelos más rápidos. Usa el concepto de rapidez que consideres.
+
+```{r}
+arrange(flights, desc(distance / air_time))
+```
+
+
+# Pregunta 4
+
+¿Qué vuelos tienen los trayectos más largos? Busca en Wikipedia qué dos aeropuertos del dataset alojan los vuelos más largos.
+
+Vuelos entre el JFK de Nueva York y el HNL, aeropuerto internacional de Honolulu en Hawai
+
+```{r}
+filter(flights, origin == "JFK", dest == "HNL")
+```
+
+# Pregunta 5
+
+¿Qué vuelos tienen los trayectos más cortos? Busca en Wikipedia qué dos aeropuertos del dataset alojan los vuelos más cortos
+
+Vuelos entre el EWR, Aeropuerto Internacional Libertad de Newark y LGA
+
+```{r}
+filter(flights, origin == "EWR", dest == "LGA")
+```
+
+# Pregunta 6
+
+Dale al coco para pensar cuántas más maneras posibles de seleccionar los campos dep_time, dep_delay, arr_time y arr_delay del dataset de flights.
+
+```{r}
+select(flights, dep_time, dep_delay, arr_time, arr_delay)
+select(flights, starts_with("dep") | starts_with("arr"))
+select(flights, contains("dep") | contains("arr"))
+```
+
+
+# Pregunta 7
+
+¿Qué ocurre si pones el nombre de una misma variable varias veces en un select()? 
+
+Se selecciona la columna 1 sola vez.
+
+```{r}
+select(flights, dep_time, dep_time)
+```
+
+
+# Pregunta 8
+Investiga el uso de la función one_of() de dplyr
+
+Permite añadir las variables en string dentro de un vector. Muy útil si es el resultado de un programa que ha devuelto un array de variables que queremos seleccionar automáticamente.
+
+
+# Pregunta 9
+Investiga cómo puede ser útil la función one_of() de la pregunta anterior en conjunción con el vector de variables
+c("year", "month", "day", "dep_delay", "arr_delay")
+
+```{r}
+select(flights, one_of(c("year", "month", "day", "dep_delay", "arr_delay")))
+```
+
+# Pregunta 10
+Intenta averiguar el resultado del siguiente código. Luego, ejecútalo y a ver si el resultado te sorprende.
+select(flights, contains("time"))
+Intenta averiguar cómo lo hacen las funciones de ayuda de la función select para tratar el caso por defecto y cómo lo puedes cambiar.
+
+```{r}
+select(flights, contains("time"))
+```
+Útil para filtrar todo lo que tiene que ver con el tiempo
+

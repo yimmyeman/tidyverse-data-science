@@ -1,0 +1,79 @@
+---
+title: "Tarea10"
+author: "Yimmy Eman"
+date: '2022-07-08'
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(nycflights13)
+```
+
+# Pregunta 1
+
+El dataset de vuelos tiene dos variables, dep_time y sched_dep_time muy útiles pero difíciles de usar por cómo vienen dadas al no ser variables continuas. Fíjate que cuando pone 559, se refiere a que el vuelo salió a las 5:59...
+
+Convierte este dato en otro más útil que represente el número de minutos que han transcurrido desde media noche.
+
+```{r}
+transmute(flights,
+          dep_time,
+          new_dep_time = 60 * dep_time %/% 100 + dep_time %% 100,
+          sched_dep_time,
+          new_shed_dep_time = 60 * sched_dep_time %/% + sched_dep_time %% 100
+          )
+```
+
+# Pregunta 2
+
+Compara las variables air_time contra arr_time - dep_time.
+
+- ¿Qué esperas ver?
+- ¿Qué ves realmente?
+- ¿Se te ocurre algo para mejorarlo y corregirlo?
+
+```{r}
+transmute(flights,air_time,
+          new_dep_time = 60*dep_time%/%100+dep_time%%100,
+          new_arr_time = 60*arr_time%/%100+arr_time%%100,
+          new_air_time = new_arr_time-new_dep_time)
+```
+# Pregunta 3
+Compara los valores de dep_time, sched_dep_time y dep_delay. Cómo deberían relacionarse estos tres números? Compruébalo y haz las correcciones numéricas que necesitas.
+
+```{r}
+transmute(flights,
+          new_dep_time = 60*dep_time%/%100+dep_time%%100,
+          new_sched_dep_time = 60*sched_dep_time%/%100+sched_dep_time%%100,
+          new_delay = new_dep_time-new_sched_dep_time,
+          dep_delay,
+          new_delay==dep_delay)
+```
+
+
+# Pregunta 4
+Usa una de las funciones de ranking para quedarte con los 10 vuelos más retrasados de todos.
+
+```{r}
+arrange(mutate(flights,r_delay =min_rank(dep_delay)),r_delay)[1:10,]
+```
+
+
+# Pregunta 5
+Aunque la ejecución te dé una advertencia, qué resultado te da la operación
+1:6 + 1:20
+
+```{r}
+1:6 + 1:20
+```
+
+
+# Pregunta 6
+Además de todas las funciones que hemos dicho, las trigonométricas también son funciones vectoriales que podemos usar para hacer transformaciones con mutate. Investiga cuales trae R y cual es la sintaxis de cada una de ellas.
+
+seno, coseno y la tangente y sus vertientes hiperbólicas.

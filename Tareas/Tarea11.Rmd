@@ -1,0 +1,120 @@
+---
+title: "Tarea Examen 1"
+author: "Yimmy Eman"
+date: '2022-07-09'
+output: pdf_document
+---
+
+```{r message=FALSE, include=FALSE}
+library(tidyverse)
+library(nycflights13)
+```
+
+
+# Pregunta 1
+
+Intenta describir con frases entendibles el conjunto de vuelos retrasados. Intenta dar afirmaciones como por ejemplo:
+
+- Un vuelo tiende a salir unos 20 minutos antes el 50% de las veces y a salir tarde el 50% de las veces restantes.
+- Los vuelos de la compañía XX llegan siempre 20 minutos tarde
+- El 95% de los vuelos a HNL llegan a tiempo, pero el 5% restante se retrasan más de 3 horas.
+Intenta dar por lo menos 5 afirmaciones verídicas en base a los datos que tenemos disponibles.
+
+
+## Planteamiento 1:
+
+- El top 3 de los vuelos más lento pertenecen a las compañías US, B6 y 9E.
+- El top 3 de los vuelos más rápidos pertenecen a las compañías DL y EV.
+
+```{r message=FALSE, warning=FALSE}
+slow.flights <- group_by(flights,carrier) %>% 
+  summarise(speed = distance/ air_time * 60) %>% 
+  arrange(speed)
+
+fast.flights <- group_by(flights,carrier) %>% 
+  summarise(speed = distance/ air_time * 60) %>% 
+  arrange(desc(speed))
+
+head(slow.flights, 3)
+head(fast.flights, 3)
+```
+
+```{r}
+ggplot(data = slow.flights, mapping = aes(x = speed, y = carrier, col = carrier)) +
+  geom_boxplot()
+```
+
+## Planteamiento 2:
+
+- El top 3 de los vuelos con mas distancia son de las compañia HA con 4983 Km y 342 vuelos, y la compañias UA con 4963 km con 365 vuelos y 3370 km y 8 vuelos respectivamente.
+
+```{r}
+(group_by(flights, carrier, distance) %>% 
+  summarise(n = n()) %>% 
+  arrange(desc(distance)))[1:3,] %>% 
+  ggplot(mapping = aes(x = n, y = distance, type = 21, col = carrier)) +
+    geom_point(shape = 13, size = 6)
+  
+```
+
+# Pregunta 2
+Da una versión equivalente a las pipes siguientes sin usar la función count:
+
+not_cancelled %>% count(dest)
+not_cancelled %>% count(tailnum, wt = distance)
+
+```{r}
+not_cancelled <- flights %>% 
+  filter(!is.na(dep_delay), !is.na(arr_delay))
+```
+
+```{r}
+# not_cancelled %>% count(dest)
+summarise(group_by(not_cancelled, dest), n())
+```
+```{r}
+# not_cancelled %>% count(tailnum, wt = distance)
+summarise(group_by(not_cancelled, tailnum), n = sum(distance))
+```
+
+# Pregunta 3
+Para definir un vuelo cancelado hemos usado la función
+
+(is.na(dep_delay) | is.na(arr_delay))
+
+Intenta dar una definición que sea mejor, ya que la nuestra es un poco subóptima. ¿Cuál es la columna más importante?
+
+```{r}
+cancelled <- flights %>% 
+  filter(is.na(dep_delay) | is.na(arr_delay))
+cancelled
+```
+
+# Pregunta 4
+Investiga si existe algún patrón del número de vuelos que se cancelan cada día.
+Investiga si la proporción de vuelos cancelados está relacionada con el retraso promedio por día en los vuelos.
+Investiga si la proporción de vuelos cancelados está relacionada con el retraso promedio por aeropuerto en los vuelos.
+¿Qué compañía aérea sufre los peores retrasos?
+
+## Sol
+
+Los días 8, 9 y 10 de cada mes hay mas cancelaciones de vuelos.
+```{r}
+cancelled_prop = round(dim(cancelled)[1] / dim(not_cancelled)[1]*100,2)
+cancelled_prop
+
+group_by(cancelled, day) %>% 
+  summarise(n = n(), 
+            daily_prop = round(n/sum(day)*100,2),
+            mean_dep_delay = mean(dep_delay > 0, na.rm = T)) %>% 
+  arrange(desc(n))
+```
+
+```{r}
+# ¿Qué compañía aérea sufre los peores retrasos?
+# R: HA y MQ
+(select(flights, carrier, dep_delay) %>%
+  arrange(desc(dep_delay)))[1:3,]
+  
+```
+
