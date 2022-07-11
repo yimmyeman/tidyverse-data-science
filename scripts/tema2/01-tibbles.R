@@ -4,6 +4,7 @@ library(tidyverse)
 View(iris)
 class(iris)
 
+#Convertir un df en tibble
 iris_tibble <- as_tibble(iris)
 class(iris_tibble)
 
@@ -24,17 +25,18 @@ t2 <- tibble(
 
 t2$`:)`
 
+# Se genera por filas
 tribble(
   ~x, ~y, ~z,
 #|---|--|------|
   "a", 4,  3.14,
   "b", 8,  6.28,
   "c", 9, -1.25
-)
+) -> t3
 
 
 tibble(
-  a = lubridate::now() + runif(1e3)*24*60*60,
+  a = lubridate::now() + runif(1e3)*24*60*60, #Paquete avanzado de fechas
   b = 1:1e3,
   c = lubridate::today() + runif(1e3)*30,
   d = runif(1e3), 
@@ -43,6 +45,7 @@ tibble(
 
 lubridate::today()
 
+#Imprimir todas las columnas
 nycflights13::flights %>%
   print(n = 12, width = Inf)
   

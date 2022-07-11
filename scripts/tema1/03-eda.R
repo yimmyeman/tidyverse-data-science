@@ -142,7 +142,7 @@ ggplot(diamonds) +
   geom_histogram(mapping = aes(x = carat), binwidth = 0.01)+
   coord_cartesian(xlim = c(0.95,1.05))
 
-# Ejercicio 4
+# Ejercicio 5
 na_diamonds <-good_diamonds %>%
   mutate(cut2 = ifelse(cut == "Fair", NA, cut))
 
@@ -222,7 +222,6 @@ diamonds %>%
   filter(carat < 3) %>%
   ggplot(mapping = aes(x = carat, y = price)) + 
     geom_boxplot(mapping = aes(group = cut_number(carat, 10)))
-
 faithful %>%
   filter(eruptions > 3) %>%
   ggplot(aes(eruptions)) + 
