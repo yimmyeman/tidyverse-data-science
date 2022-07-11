@@ -9,7 +9,7 @@ table %>%
 table %>%
   count(year, wt = cases)
 
-table1 %>%
+table %>%
   ggplot(aes(year, cases)) + 
   geom_line(aes(group = country), color = "grey") + 
   geom_point(aes(color = country))

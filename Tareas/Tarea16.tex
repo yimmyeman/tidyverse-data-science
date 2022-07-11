@@ -1,0 +1,390 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={Tarea16},
+  pdfauthor={Yimmy Eman},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Tarea16}
+\author{Yimmy Eman}
+\date{2022-07-11}
+
+\begin{document}
+\maketitle
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{pregunta-1}{%
+\section{Pregunta 1}\label{pregunta-1}}
+
+Investiga la documentación para decir cuales son los argumentos más
+importantes que trae la función locale()
+
+\begin{itemize}
+\item
+  date\_names\\
+  Character representations of day and month names. Either the language
+  code as string (passed on to date\_names\_lang()) or an object created
+  by date\_names().
+\item
+  date\_format, time\_format\\
+  Default date and time formats.
+\item
+  decimal\_mark, grouping\_mark\\
+  Symbols used to indicate the decimal place, and to chunk larger
+  numbers. Decimal mark can only be ⁠,⁠ or ..
+\item
+  tz\\
+  Default tz. This is used both for input (if the time zone isn't
+  present in individual strings), and for output (to control the default
+  display). The default is to use ``UTC'', a time zone that does not use
+  daylight savings time (DST) and hence is typically most useful for
+  data. The absence of time zones makes it approximately 50x faster to
+  generate UTC times than any other time zone. Use ``\,'' to use the
+  system default time zone, but beware that this will not be
+  reproducible across systems. For a complete list of possible time
+  zones, see OlsonNames(). Americans, note that ``EST'' is a Canadian
+  time zone that does not have DST. It is not Eastern Standard Time.
+  It's better to use ``US/Eastern'', ``US/Central'' etc.
+\item
+  encoding\\
+  Default encoding. This only affects how the file is read - readr
+  always converts the output to UTF-8.
+\item
+  asciify\\
+  Should diacritics be stripped from date names and converted to ASCII?
+  This is useful if you're dealing with ASCII data where the correct
+  spellings have been lost. Requires the stringi package.
+\end{itemize}
+
+\hypertarget{pregunta-2}{%
+\section{Pregunta 2}\label{pregunta-2}}
+
+\begin{itemize}
+\tightlist
+\item
+  Investiga qué ocurre si intentamos configurar a la vez el
+  decimal\_mark y grouping\_mark con el mismo carácter.
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#parse\_number("1.000.000", locale = locale(grouping\_mark = ".", decimal\_mark = "."))}
+\end{Highlighting}
+\end{Shaded}
+
+Error: \texttt{decimal\_mark} and \texttt{grouping\_mark} must be
+different
+
+\begin{itemize}
+\tightlist
+\item
+  ¿Qué valor por defecto toma el grouping\_mark cuando configuramos el
+  decimal\_mark al carácter de coma ``,''?
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{parse\_number}\NormalTok{(}\StringTok{"1.000.000"}\NormalTok{, }\AttributeTok{locale =} \FunctionTok{locale}\NormalTok{(}\AttributeTok{grouping\_mark =} \StringTok{"."}\NormalTok{, }\AttributeTok{decimal\_mark =} \StringTok{","}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1e+06
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Queda configurado al contrario }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  ¿Qué valor por defecto toma el decimal\_mark cuando configuramos el
+  grouping\_mark al carácter de punto ``.''?
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#parse\_number("1.000.000", locale = locale(grouping\_mark = ".", decimal\_mark = "."))}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{pregunta-3}{%
+\section{Pregunta 3}\label{pregunta-3}}
+
+Investiga qué hace la opción del locale() cuando se utiliza junto al
+date\_format y al time\_format . Crea un ejemplo que muestre cuando
+puede sernos útil.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{locale}\NormalTok{(}\AttributeTok{date\_names =} \StringTok{"en"}\NormalTok{,}
+       \AttributeTok{date\_format =} \StringTok{"\%AD"}\NormalTok{,}
+       \AttributeTok{time\_format =} \StringTok{"\%AT"}\NormalTok{,}
+       \AttributeTok{decimal\_mark =} \StringTok{"."}\NormalTok{,}
+       \AttributeTok{grouping\_mark =} \StringTok{","}\NormalTok{,}
+       \AttributeTok{tz =} \StringTok{"UTC"}\NormalTok{,}
+       \AttributeTok{encoding =} \StringTok{"UTF{-}8"}\NormalTok{,}
+       \AttributeTok{asciify =} \ConstantTok{FALSE}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## <locale>
+## Numbers:  123,456.78
+## Formats:  %AD / %AT
+## Timezone: UTC
+## Encoding: UTF-8
+## <date_names>
+## Days:   Sunday (Sun), Monday (Mon), Tuesday (Tue), Wednesday (Wed), Thursday
+##         (Thu), Friday (Fri), Saturday (Sat)
+## Months: January (Jan), February (Feb), March (Mar), April (Apr), May (May),
+##         June (Jun), July (Jul), August (Aug), September (Sep), October
+##         (Oct), November (Nov), December (Dec)
+## AM/PM:  AM/PM
+\end{verbatim}
+
+\hypertarget{pregunta-4}{%
+\section{Pregunta 4}\label{pregunta-4}}
+
+Crea un nuevo objeto locale que encapsule los ajustes más comunes de los
+parámetros para la carga de los fichero con los que sueles trabajar.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{locale}\NormalTok{(}\AttributeTok{date\_names =} \StringTok{"es"}\NormalTok{,}
+       \AttributeTok{date\_format =} \StringTok{"\%AD"}\NormalTok{,}
+       \AttributeTok{time\_format =} \StringTok{"\%AT"}\NormalTok{,}
+       \AttributeTok{decimal\_mark =} \StringTok{","}\NormalTok{,}
+       \AttributeTok{grouping\_mark =} \StringTok{"."}\NormalTok{,}
+       \AttributeTok{tz =} \StringTok{"UTC"}\NormalTok{,}
+       \AttributeTok{encoding =} \StringTok{"UTF{-}8"}\NormalTok{,}
+       \AttributeTok{asciify =} \ConstantTok{FALSE}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## <locale>
+## Numbers:  123.456,78
+## Formats:  %AD / %AT
+## Timezone: UTC
+## Encoding: UTF-8
+## <date_names>
+## Days:   domingo (dom.), lunes (lun.), martes (mar.), miércoles (mié.), jueves
+##         (jue.), viernes (vie.), sábado (sáb.)
+## Months: enero (ene.), febrero (feb.), marzo (mar.), abril (abr.), mayo (may.),
+##         junio (jun.), julio (jul.), agosto (ago.), septiembre (sept.),
+##         octubre (oct.), noviembre (nov.), diciembre (dic.)
+## AM/PM:  a. m./p. m.
+\end{verbatim}
+
+\hypertarget{pregunta-5}{%
+\section{Pregunta 5}\label{pregunta-5}}
+
+Investiga las diferencias entre read\_csv() y read\_csv2()?
+
+read\_csv() y read\_tsv() son casos especiales del read\_delim() más
+general. Son útiles para leer los tipos más comunes de datos de archivos
+sin formato, valores separados por comas y valores separados por
+tabulaciones, respectivamente. read\_csv2() utiliza ?;? para el
+separador de campos y ?,? para el punto decimal. Este formato es común
+en algunos países europeos.
+
+\hypertarget{pregunta-6}{%
+\section{Pregunta 6}\label{pregunta-6}}
+
+Investiga las codificaciones que son más frecuentes en Europa y las más
+comunes en Asia. Usa un poco de Google e iniciativa para investigar
+acerca de este tema.
+
+\hypertarget{pregunta-7}{%
+\section{Pregunta 7}\label{pregunta-7}}
+
+Genera el formato correcto de string que procesa cada una de las
+siguientes fechas y horas:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{v1 }\OtherTok{\textless{}{-}} \StringTok{"May 19, 2018"}
+\FunctionTok{parse\_date}\NormalTok{(v1, }\StringTok{"\%b \%d, \%Y"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "2018-05-19"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{v2 }\OtherTok{\textless{}{-}} \StringTok{"2018{-}May{-}08"}
+\FunctionTok{parse\_date}\NormalTok{(v2, }\StringTok{"\%Y{-}\%b{-}\%d"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "2018-05-08"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{v3 }\OtherTok{\textless{}{-}} \StringTok{"09{-}Jul{-}2013"}
+\FunctionTok{parse\_date}\NormalTok{(v3, }\StringTok{"\%d{-}\%b{-}\%Y"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "2013-07-09"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{v4 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"January 19 (2019)"}\NormalTok{, }\StringTok{"May 1 (2015)"}\NormalTok{)}
+\FunctionTok{parse\_date}\NormalTok{(v4, }\StringTok{"\%B \%d (\%Y)"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "2019-01-19" "2015-05-01"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{v5 }\OtherTok{\textless{}{-}} \StringTok{"12/31/18"} \CommentTok{\# Dic 31, 2014}
+\FunctionTok{parse\_date}\NormalTok{(v5, }\StringTok{"\%m/\%d/\%y"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "2018-12-31"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{v6 }\OtherTok{\textless{}{-}} \StringTok{"1305"}
+\FunctionTok{parse\_time}\NormalTok{(v6, }\AttributeTok{format =} \StringTok{"\%H\%M"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 13:05:00
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{v7 }\OtherTok{\textless{}{-}} \StringTok{"12:05:11.15 PM"}
+\FunctionTok{parse\_time}\NormalTok{(v7)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 12:05:11
+\end{verbatim}
+
+\end{document}
