@@ -1,0 +1,108 @@
+---
+title: "Tarea15"
+author: "Yimmy Eman"
+date: '2022-07-11'
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+
+```
+
+# Pregunta 1
+Indica qué función y parámetros usarías para leer ficheros separados con “|”
+
+read_delim("path", delim = "|")
+
+# Pregunta 2
+Además de file, skip y comment que hemos visto en el curso, ¿qué otros argumentos tienen read_csv y read_tsv en común? Indica para qué sirve cada uno de ellos.
+
+
+
+  col_names = TRUE,
+  col_types = NULL,
+  col_select = NULL,
+  id = NULL,
+  locale = default_locale(),
+  na = c("", "NA"),
+  quoted_na = TRUE,
+  quote = "\"",
+  comment = "",
+  trim_ws = TRUE,
+  skip = 0,
+  n_max = Inf,
+  guess_max = min(1000, n_max),
+  progress = show_progress(),
+  name_repair = "unique",
+  num_threads = readr_threads(),
+  show_col_types = should_show_types(),
+  skip_empty_rows = TRUE,
+  lazy = should_read_lazy()# Pregunta 3
+  
+  
+Indica los argumentos más importantes de read_fwf() 
+R: col_names, col_types, locale, na, quoted_na, trim_ws, n_max, guess_max, progress
+
+# Pregunta 4
+A veces un csv contiene necesariamente comas en los campos que son strings. Para evitar problemas en la carga, suelen ir rodeadas de comillas dobles " o de comillas simples ’. La convención de read_csv() es que asume que cualquier caracter vendrá rodeado por comillas dobles " y si lo queremos cambiar tenemos que usar la función read_delim().
+Indica qué argumentos tendríamos que especificar para poder leer el texto del siguiente data frame correctamente
+
+"x,y\n1,'a,b'"
+
+```{r}
+
+data <- "x,y\n1,'a,b'"
+read_delim(data, ",", quote = "'")
+data
+```
+
+
+# Pregunta 5
+Indica qué está mal en la siguiente línea de lectura de CSV:
+read_csv("x,y\n1,2,3\n4,5,6")
+
+```{r}
+read_csv("x,y\n1,2,3\n4,5,6")
+```
+
+Sólo hay dos columnas, pero 3 en la entrada de datos.
+
+# Pregunta 6
+Indica qué está mal en la siguiente línea de lectura de CSV:
+read_csv("x,y,z\n1,2\n3,4,5,6")
+
+```{r}
+read_csv("x,y,z\n1,2\n3,4,5,6")
+```
+Las filas de datos tienen menos o más columnas de información de la cabecera. En la lectura, la primera filatendrá un NA mientras que la última eliminará la última columna de información.
+
+# Pregunta 7
+Indica qué está mal en la siguiente línea de lectura de CSV:
+read_csv("x,y\n\"1")
+
+```{r}
+read_csv("x,y\n\"1")
+```
+El caracter escapante está mal indicado.
+
+# Pregunta 8
+Indica qué está mal en la siguiente línea de lectura de CSV:
+read_csv("x,y\n1,2\na,b")
+
+```{r}
+read_csv("x,y\n1,2\na,b")
+```
+Las columnas de datos no son homogéneas.
+
+# Pregunta 9
+Indica qué está mal en la siguiente línea de lectura de CSV:
+read_csv("x;y\n1;2")
+
+```{r}
+read_csv("x;y\n1;2")
+```
+Se debe usar read_csv2 por estar delimitado por ;
