@@ -3,13 +3,22 @@ library(tidyverse)
 table <- read_csv("data/population.csv")
 View(table)
 
+
+table
+table1
+table2
+table3
+table4a
+table4b
+table5
+
 table %>%  
   mutate(rate = cases/population*10000)
 
 table %>%
   count(year, wt = cases)
 
-table %>%
+table1 %>%
   ggplot(aes(year, cases)) + 
   geom_line(aes(group = country), color = "grey") + 
   geom_point(aes(color = country))
@@ -120,6 +129,12 @@ roi %>%
   spread(year, return) %>%
   gather(year, return, `2016`:`2018`, na.rm = TRUE)
 
+### Utilizando Pivoting
+#NO ME FUNCIANA!!!
+roi %>% 
+  pivot_longer() 
+########################
+
 roi %>%
   complete(year, quarter)
 
@@ -134,8 +149,9 @@ treatments <- tribble(
 )
 
 
+#RELLENAR CON LOS DATOS DE LA FILA ANTERIOR
 treatments %>%
-  fill(name)
+  fill(name) 
 
 
 
@@ -144,5 +160,5 @@ tidyr::who %>%
   mutate(key = stringr::str_replace(key, "newrel", "new_rel")) %>%
   separate(key, c("new", "type", "sexage"), sep = "_") %>%
   select(-new, -iso2, -iso3) %>%
-  separate(sexage, c("sex", "age"), sep = 1)
-
+  separate(sexage, c("sex", "age"), sep = 1) %>% #Separado por primera pos
+  View()

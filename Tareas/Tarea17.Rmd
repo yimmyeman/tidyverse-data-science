@@ -1,0 +1,221 @@
+---
+title: "Tarea17"
+author: "Yimmy Eman"
+date: '2022-07-11'
+output: pdf_document
+---
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+```
+
+# Pregunta 1
+Describe cómo están organizadas las variables y observaciones en cada una de las cinco familias de tablas table1,... table5 detidyverse.
+
+```{r}
+# Cada fila es una combinación de country - year con las variables 
+# cases y population.
+
+table1
+```
+
+```{r}
+# Cada fila es una combinación de country, year, y una variable "type" 
+# con valores ("cases","population") , y otra variable count con el valor 
+# numérico de la anterior.
+table2
+```
+
+```{r}
+# Cada fila es una combinación de country - year con las variables rate en 
+# formato string.
+
+table3
+```
+
+
+```{r}
+# Tabla de los cases:
+table4a
+
+# Tabla de los population:
+table4b
+```
+
+
+```{r}
+# Cada fila es una combinación de country - (con la separación de year en 
+# century y year) con las variables rate en formato string.
+table5
+```
+
+
+# Pregunta 2
+Calcula la columna de rate para table2 y para la combinación de table4a y table4b sin usar las funciones gather o spread.
+
+```{r}
+table2
+tb2_cases <-filter(table2, type=="cases")[["count"]]
+tb2_country <-filter(table2, type=="cases")[["country"]]
+tb2_year <-filter(table2, type=="cases")[["year"]]
+tb2_population <-filter(table2, type=="population")[["count"]]
+
+table2_clean <- tibble(country = tb2_country,
+                       year = tb2_year,
+                       rate = tb2_cases/tb2_population)
+table2_clean
+```
+
+
+```{r}
+tidy4a <- table4a %>%
+  pivot_longer(c(`1999`, `2000`), names_to = "year", values_to = "cases")
+
+tidy4b <- table4b %>%
+  pivot_longer(c(`1999`, `2000`), names_to = "year", values_to = "population")
+
+left_join(tidy4a, tidy4b) %>% 
+  mutate(rate = cases / population)
+```
+
+# Pregunta 3
+Recrea el plot que hemos hecho en la clase para mostrar los casos de infección a lo largo de los años usando la table2 en lugar de la table1. ¿En qué difiere el proceso?
+
+```{r}
+table2 %>%
+  ggplot(aes(year, count)) + 
+  geom_line(aes(group = country), color = "grey") + 
+  geom_point(aes(color = country))
+```
+
+
+# Pregunta 4
+Las funciones spread y gather no son absolutamente simétricas. Toma el siguiente ejemplo para explicarlo correctamente:
+
+```{r}
+roi <-tibble(year =c(rep(2016,4),rep(2017,4), 2018),
+             quarter =c(rep(c(1,2,3,4),2),1),
+             return =rnorm(9, mean = 0.5, sd = 1))
+
+roi %>% 
+  spread(year, return) %>% 
+  gather("year", "return", '2016':'2018')
+```
+
+The functions spread and gather are not perfectly symmetrical because column type information is not transferred between them. In the original table the column year was numeric, but after running spread() and gather() it is a character vector. This is because variable names are always converted to a character vector by gather().
+
+# Pregunta 5
+Las funciones de spread y gather comparten un argumento convert. Investiga su uso. 
+
+Convert a data object to logical, integer, numeric, complex, character or factor as appropriate.
+
+# Pregunta 6
+Sin ejecutar, investiga por qué falla el siguiente código
+table4a %>% gather(1999,2000, key = "year", value = "cases")
+
+Porque faltan los backsticks en 1999 y 2000.
+
+
+# Pregunta 7
+Explica por qué falla la función spread aplicada a la siguiente tribble:
+
+
+```{r}
+people <- tribble(
+  ~name,         ~key,   ~value,
+  #-------------|-------|-------
+  "Juan Gabriel", "age",     18,
+  "Juan Gabriel", "weight",  58,
+  "Juan Gabriel", "age",     30,
+  "Juan Gabriel", "weight",  71,
+  "Ricardo",      "age",     55,
+  "Ricardo",      "age",     75
+)
+```
+
+Hacer un Spreading del tibble falla porque hay dos filas con el campo age de Juan Gabriel.  Se podríasolucionar añadiendo una nueva columna observación que contara si es la primera, la segunda. . .  que semide la edad y/o peso del individuo.
+
+# Pregunta 8
+Limpia la siguiente tibble con la función de spread o gather que creas más útil.
+
+```{r}
+pregnancy <- tribble(
+  ~pregnant, ~male, ~female,
+  #--------|------|---------
+  "yes",    NA,    32,
+  "no",     85,    43
+)
+```
+
+
+```{r}
+pregnancy %>%
+  gather("male", "female", key = sex, value = count)  %>%
+  mutate(pregnant = (pregnant == "yes"),
+         female = (sex == "female")) %>%
+  select(-sex)
+```
+
+```{r}
+pregnancy %>% 
+  pivot_longer(c("male", "female"), 
+               names_to = "sex", values_to = "count")
+
+pregnancy %>% 
+  pivot_longer(c("male", "female"), 
+               names_to = "sex", values_to = "count") %>%
+  mutate(pregnant = (pregnant == "yes"),
+         female = (sex == "female")) %>%
+  select(-sex) # Seleccionar todas - la variable sex
+```
+
+
+# Pregunta 9
+
+Investiga los parámetros extra y fill de la función separate. Experimenta con varias opciones de las mismas con las dos tibbles siguientes:
+
+
+```{r}
+tibble(x =c("a,b,c", "d,e,f,g","h,i,j")) %>%
+  separate(x,c("x", "y", "z"))
+
+tibble(x =c("a,b,c", "d,e","f,g,h")) %>%
+  separate(x,c("x", "y", "z"))
+```
+
+Sol.
+
+```{r}
+tibble(x =c("a,b,c", "d,e,f,g","h,i,j")) %>%
+  separate(x,c("x", "y", "z"), extra = "drop")
+
+tibble(x =c("a,b,c", "d,e","f,g,h")) %>%
+  separate(x,c("x", "y", "z"), fill = "left")
+```
+
+
+# Pregunta 10
+unite y separate tienen un argumento llamado remove. ¿Cómo funciona? ¿Se te ocurre cuando lo pondrías a false?
+
+IfTRUE, remove input column from output data frame.
+
+# Pregunta 11
+Compara las funciones separate y unite. ¿Por qué existen tres variantes de separación (basándonos en posición, separador o por grupos) pero solamente una para unir?
+
+La función de unir simplemente concatena con el separador especificado, el restode parámetros no tienen sentido
+
+# Pregunta 12
+Compara el argumento fill de spread y el de complete. Investiga también el argumento direction de la función fill.
+
+Fill completa los datos que faltan con NAs donde pertoque.  La dirección es para completarlos desde laderecha o desde la izquierda.
+
+```{r}
+# Ejemplos
+
+tibble(x =c("a,b,c", "d,e","f,g,h")) %>%
+  separate(x,c("x", "y", "z"), fill = "left")
+
+tibble(x =c("a,b,c", "d,e","f,g,h")) %>%
+  separate(x,c("x", "y", "z"), fill = "right")
+```
+
