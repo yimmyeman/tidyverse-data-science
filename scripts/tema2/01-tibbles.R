@@ -47,7 +47,7 @@ lubridate::today()
 
 #Imprimir todas las columnas
 nycflights13::flights %>%
-  print(n = 12, width = Inf)
+  print(n = 12, width = Inf) # n = row numbers
   
 
 options(tibble.print_max = 12, tibble.print_min = 12)
@@ -57,10 +57,10 @@ options(tibble.width = Inf)
 nycflights13::flights %>% #....
   View()
   
-
+# How to access to columns
 # [['nombre_variable']]
-# [[posicion_variable]]
-# $nombre_variable
+# [[posicion_variable]] 
+# $nombre_variable 
 
 df <- tibble(
   x = rnorm(10),

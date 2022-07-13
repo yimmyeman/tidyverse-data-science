@@ -160,5 +160,5 @@ tidyr::who %>%
   mutate(key = stringr::str_replace(key, "newrel", "new_rel")) %>%
   separate(key, c("new", "type", "sexage"), sep = "_") %>%
   select(-new, -iso2, -iso3) %>%
-  separate(sexage, c("sex", "age"), sep = 1) %>% #Separado por primera pos
+  separate(sexage, c("sex", "age"), sep = 1) %>% #Split by first position
   View()
