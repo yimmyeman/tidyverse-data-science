@@ -5,8 +5,7 @@ date: '2022-07-12'
 output: pdf_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r}
 library(tidyverse)
 library(nycflights13)
 library(Lahman)
@@ -218,13 +217,69 @@ flights %>%
   geom_smooth()
 ```
 
+
 - ¿Qué ocurrió el 13 de Junio de 2013? Representa la distribución de retrasos espaciales y luego usa Google para encontrar alguna referencia del tiempo ese día.
+
+Hubo una gran serie de tormentas (derechos) en el sureste de los EE. UU. (consulte la serie derecho del 12 y 13 de junio de 2013). 
+
+```{r}
+flights %>%
+  filter(year == 2013, month == 6, day == 13) %>%
+  group_by(dest) %>%
+  summarise(delay = mean(arr_delay, na.rm = TRUE)) %>%
+  inner_join(airports, by = c("dest" = "faa")) 
+```
 
 
 # Pregunta 7
 - ¿Qué significa que un vuelo no tenga tailnum? ¿Qué significan los números de cola de los vuelos que no aparecen en la tabla planes? Con una variable o dos debería bastarte para responder.
+
+Son vuelos que no tienen cola tampoco tienen hora de llegada, por lo tanto deben ser cancelados.
+
+```{r}
+flights %>%
+  select(tailnum, arr_time) %>% 
+  filter(is.na(tailnum)) %>% 
+  summary()
+```
+
+
+
 - Filtra los vuelos para mostrar solo los aviones que han volado más de 100 veces en el año.
+
+
+```{r}
+flights %>% 
+  filter(!is.na(tailnum)) %>% 
+  group_by(tailnum) %>% 
+  count() %>% 
+  filter(n>=100)
+```
+
+
+
 - Encuentra en el dataset de vuelos las 48 horas de todo el año que han tenido más retrasos. Cruza la información con la tabla del tiempo weather para explicar lo sucedido. ¿Observas algún patrón?
+
+```{r}
+peores_horas <- flights %>%
+  mutate(hora = sched_dep_time %/% 100) %>%
+  group_by(origin, year, month, day, hour) %>%
+  summarise(atraso_salida = mean(dep_delay, na.rm = TRUE)) %>%
+  ungroup() %>%
+  arrange(desc(atraso_salida)) %>%
+  slice(1:48)
+
+clima_peores_horas <- semi_join(weather, peores_horas, 
+                                  by = c("origin", "year", "month", "day", "hour"))
+
+select(clima_peores_horas, temp, wind_speed, precip) %>%
+  print(n = 48)
+
+ggplot(clima_peores_horas, aes(x = precip, y = wind_speed, color = temp)) +
+  geom_point()
+```
+
+
 - ¿Qué nos indica la operación anti_join(flights, airports, by = c("dest"="faa"))?
 - ¿Qué nos indica la operación anti_join(airports, flights, by = c("faa"="dest"))?
 - ¿Crees que cada avión pertenece a una sola aerolínea? Esa es mi intuición. Confirma o rechaza esta

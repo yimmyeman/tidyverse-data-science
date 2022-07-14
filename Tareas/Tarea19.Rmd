@@ -1,0 +1,209 @@
+---
+title: "Tarea19"
+author: "Yimmy Eman"
+date: '2022-07-14'
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+# Pregunta 1
+Antes de usar stringr, muchas veces habréis usado las funciones paste() y paste0(). ¿Qué diferencia ambas funciones? A qué función de stringr son equivalentes? ¿Cómo gestionan internamente los NA?
+
+paste() y paste0() se diferencian en la opción por defecto para separar los elementos que se concatenan. paste() deja un espacio; paste0() no.
+
+```{r}
+paste("uno", "dos", "tres")
+paste0("uno", "dos", "tres")
+```
+Estas funciones son equivalentes a str_c(). Esta función por defecto no agrega un espacio entre los elementos concatenados, por lo que si queremos incluirlo es necesario explicitarlo con el argumento sep =:
+
+```{r}
+str_c("uno", "dos", "tres")
+str_c("uno", "dos", "tres", sep = " ")
+```
+
+
+# Pregunta 2
+
+- Describe la diferencia entre sep y collapse de la función str_c()
+
+sep define el caracter que se inserta entre los elementos a concatenar. collapse, por su parte, es el caracter para combinar entre los elementos a concatenar para generar un vector de extensión 1
+
+- Utiliza str_length() y str_sub() para extraer el carácter central de un string. ¿Qué harías si el string tiene un número par / impar de caracteres?
+
+```{r}
+x <- c("uno", "dos", "tres")
+largo <- str_length(x)
+mitad <- ceiling(largo / 2)
+str_sub(x, start = mitad, end = mitad)
+
+```
+
+- ¿Qué hace la función str_wrap() y cuándo podrías usarla?
+
+str_wrap() permite formatear párrafos indicando el ancho en cantidad de caracteres que queremos que tenga. El valor por defecto es 80.
+
+- ¿Qué hace la función str_trim() y cuál es su función opuesta?
+
+str_trim() permite eliminar espacios en blanco al inicio y al final de una cadena de caracteres:
+
+- Escribe una función que convierta un vector ("a","b","c") en un string que diga "a, b y c". Piensa
+en las posiciones en el caso de vectores de longitud 0, 1, y 2 especialmente.
+
+# Pregunta 3
+
+Explica por qué los siguientes strings no coinciden con "\": "\", "\\" y "\\\"
+
+- ¿Cómo localizarías la secuencia "'\?
+
+```{r}
+str_view("\"'\\", "\"'\\\\", match = TRUE)
+```
+
+- ¿Qué patrón encontraría la expresión regular \..\..\..? ¿Cómo lo representarías en formato string? 
+
+```{r}
+str_view(c(".a.b.c", ".a.b", "....."), c("\\..\\..\\.."), match = TRUE)
+```
+
+- Cómo buscarías el carácter string "$ˆ$"?
+
+```{r}
+str_view(c("$^$", "ab$^$sfas"), "^\\$\\^\\$$", match = TRUE)
+```
+
+# Pregunta 4
+
+A partir de las palabras dadas en stringr::words, escribe expresiones regulares para localizar palabras que:
+
+1. Empiecen por “y”
+
+```{r}
+str_view(words, "^y", match = T)
+```
+
+2. Acaben por “x”
+
+```{r}
+str_view(words, "x$", match = T)
+```
+
+3. Tengan exactamente tres letras (sin usar la función str_length()) 
+
+```{r}
+str_view(words, "^...$", match = T)
+```
+
+4. Tengan siete o más letras.
+Como la lista es algo larga, intenta usar el parámetro match del str_view() para acotar y ver solo los resultados positivos
+
+```{r}
+str_view(stringr::words, ".......", match = TRUE)
+```
+
+
+# Pregunta 5
+Con el mismo dataset de stringr::words
+- Crea una expresión regular que se quede con las palabras que:
+1. empiezan por vocal
+
+```{r}
+head(str_subset(stringr::words, "^[aeiou]"),10)
+tail(str_subset(stringr::words, "^[aeiou]"),10)
+```
+2. contengan solo consonantes
+
+```{r}
+str_view(words, "^[^aeiou]+$", match = T)
+```
+
+3. Acaben con -ed (verbos en pasado) pero no en -eed 4. Acaben con -ing o -ise
+
+
+```{r}
+str_view(words, "[^e]ed$", match = TRUE)
+```
+
+```{r}
+str_view(words, "i(ng|se)$", match = TRUE)
+```
+
+- ¿Verifíca la regla de gramática “i antes de e excepto si va después de c” de la gramática inglesa. 
+
+```{r}
+length(str_subset(stringr::words, "(cei|[^c]ie)"))
+length(str_subset(stringr::words, "(cie|[^c]ei)"))
+
+```
+
+- ¿Todas las palabras que tienen una q les sigue después una u?
+
+```{r}
+str_view(words, "q[^u]", match = TRUE)
+```
+
+- Adapta mi código para escribir expresiones regulares que coincidan con teléfonos de tu región. 
+
+- Crea una expresión regular que se quede con las palabras que cumplan :
+
+1. empiezan con tres consonantes
+
+```{r}
+str_view(words, "^[^aeiou]{3}", match = TRUE)
+```
+
+2. tienen tres o más vocales consecutivas
+
+```{r}
+str_view(words, "[aeiou]{3,}", match = TRUE)
+```
+
+3. tienen dos o más pares de consonante-vocal seguidas
+
+```{r}
+str_view(words, "([aeiou][^aeiou]){2,}", match = TRUE)
+```
+
+
+# Pregunta 6
+Resuelve el crucigrama fácil de la web: https://regexcrossword.com/challenges/beginner/puzzles/1
+
+
+# Pregunta 7
+Describe las palabras que devolverá la expresión regular:
+
+1. "(.)(.)(.).*\\3\\2\\1" 
+2. "(.).\\1.\\1"
+3. (..)\1
+4. "(.)(.)\\2\\1"
+5. (.)\1\1
+6. "\\\\{4}"
+7. \d{4}-\d{2}-\d{2} 
+8. "\\{.+\\}"
+9. ˆ.*$
+
+# Pregunta 8
+Crea una expresión regular que se quede con las palabras que cumplan:
+- Empiezan y acaban con el mismo carácter
+
+```{r}
+str_subset(words, "^(.)((.*\\1$)|\\1?$)")
+```
+
+- Contienen pares de letras repetidas (church por ejemplo)
+```{r}
+str_subset("church", "([A-Za-z][A-Za-z]).*\\1")
+```
+
+- Contienen una letra repetida en al menos tres lugares (las tres a de manzana)
+```{r}
+str_subset(words, "([A-Za-z][A-Za-z]).*\\1")
+```
+
