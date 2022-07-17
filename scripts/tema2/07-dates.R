@@ -52,6 +52,7 @@ as_date(now())
 #EPOCH -> 1970-01-01
 as_datetime(60*60*2018) # Cada unidad representa un segundo
 as_date(365*10 + 2)     # Cada unidad representa un día
+#Se suma 2 debido al año bisiesto que sucede cada 4 años.
 
 nowwww <- now()
 nowwww

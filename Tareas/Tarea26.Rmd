@@ -1,0 +1,162 @@
+---
+title: "Tarea26"
+author: "Yimmy Eman"
+date: "2022-07-17"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library("tidyverse")
+library("stringr")
+library("microbenchmark")
+```
+
+# Pregunta 1
+Escribe bucles que calculen
+
+a. La media para cada columna de mtcars.
+
+```{r}
+output <- vector("double", ncol(mtcars))
+names(output) <- names(mtcars)
+for (i in names(mtcars)) {
+  output[i] <- mean(mtcars[[i]])
+}
+output
+```
+
+b. El tipo de dato de cada columna de nycflights13::flights.
+
+```{r}
+output <- vector("list", ncol(nycflights13::flights))
+names(output) <- names(nycflights13::flights)
+for (i in names(nycflights13::flights)) {
+  output[[i]] <- class(nycflights13::flights[[i]])
+}
+output
+```
+
+c. El número de valores únicos de cada columna deiris.
+
+```{r}
+data("iris")
+iris_uniq <- vector("double", ncol(iris))
+names(iris_uniq) <- names(iris)
+for (i in names(iris)) {
+  iris_uniq[i] <- n_distinct(iris[[i]])
+}
+iris_uniq
+```
+
+d. Genera 10 números aleatorios de una distribución normal de media -10, 0, 10 y 100 respectivamente.
+
+```{r}
+n <- 10
+mu <- c(-10, 0, 10, 100)
+normals <- vector("list", length(mu))
+for (i in seq_along(normals)) {
+  normals[[i]] <- rnorm(n, mean = mu[i])
+}
+normals
+```
+
+Piensa acerca del tipo de dato que tiene que devolver cada bucle antes de empezar a programarlo.
+
+
+# Pregunta 2
+Elimina el bucle for de cada ejemplo haciendo uso de una función que ya trabaje sobre vectores:
+
+```{r}
+out <- ""
+for (x in letters) {
+  out <- stringr::str_c(out, x) 
+}
+
+x <- sample(100)
+sd <- 0
+for (i in seq_along(x)) {
+  sd <- sd + (x[i] - mean(x)) ^ 2}
+sd <- sqrt(sd / (length(x) - 1))
+x <- runif(100)
+out <- vector("numeric", length(x)) 
+out[1] <- x[1]
+for (i in 2:length(x)) {
+  out[i] <- out[i - 1] + x[i] }
+```
+
+ 
+# Pregunta 3
+
+Combina una función con tus habilidades de programación con bucles para:
+- Convertir la canción “99 bottles of beer on the wall” en una función. Generalízalo a cualquier número de recipientes conteniendo cualquier tipo de líquido en cualquier superficie posible.
+- Escribe un bucle que utilice la función prints() para escribir la letra de la canción “Alice the camel”
+
+```{r}
+numbers <- c(
+  "ten", "nine", "eight", "seven", "six", "five",
+  "four", "three", "two", "one"
+)
+for (i in numbers) {
+  cat(str_c("There were ", i, " in the bed\n"))
+  cat("and the little one said\n")
+  if (i == "one") {
+    cat("I'm lonely...")
+  } else {
+    cat("Roll over, roll over\n")
+    cat("So they all rolled over and one fell out.\n")
+  }
+  cat("\n")
+}
+```
+
+
+# Pregunta 4
+Imagina que tienes un directorio lleno de archivos CSV que quieres leer con un patrón de nombre y estructura de datos común en su path: files <- dir("data/", pattern = "\\.csv$", full.names = TRUE), y quieres leerlos todos haciendo uso de la funciónread_csv().
+Escribe un bucle for que los cargue todos en un solo data frame.
+
+```{r}
+files <- dir("data/", pattern = "\\.csv$", full.names = TRUE)
+files
+df_list <- vector("list", length(files))
+for (i in seq_along(files)) {
+  df_list[[i]] <- read_csv(files[[i]])
+}
+print(df_list)
+```
+
+
+# Pregunta 5
+¿Qué ocurre si usamos el bucle for (nm in names(x)) y x no tiene ningún nombre? ¿Y si solo tienen nombre alguno de ellos? ¿Y si algún nombre está repetido?
+
+```{r}
+x <- c(11, 12, 13)
+print(names(x))
+
+for (nm in names(x)) {
+  print(nm)
+  print(x[[nm]])
+}
+```
+
+
+# Pregunta 6
+Escribe una función que imprima la media de cada columna numérica en un data frame junto con su nombre. Por ejemplo la llamada show_mean(iris) debería imprimir:
+Reto adicional: ¿cómo lo harías para alinear los números en columna a pesar de que los nombres de las variables tengan diferente longitud?
+
+```{r}
+#No me funciona show_mean(iris)
+```
+
+
+# Pregunta 7
+¿Qué hace este código y cómo funciona?
+
+```{r}
+# show_mean(iris)
+
+# No funciona el codigo
+```
+
+ 
+

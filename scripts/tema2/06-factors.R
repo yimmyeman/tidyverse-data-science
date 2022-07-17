@@ -22,6 +22,8 @@ f2 <- x1 %>% factor() %>% fct_inorder()
 
 levels(f2)
 
+#Dataset de gss_cat
+
 gss_cat %>% View()
 
 gss_cat %>% count(marital)
@@ -32,7 +34,7 @@ gss_cat %>% ggplot(aes(marital)) +
 
 gss_cat %>% ggplot(aes(race)) + 
   geom_bar() + 
-  scale_x_discrete(drop = FALSE)
+  scale_x_discrete(drop = FALSE) #Para ver si falta alguno
 
 religion_summary <- gss_cat %>%
   group_by(relig) %>%
@@ -96,8 +98,7 @@ gss_cat %>%
     "Other"                   = "No answer",
     "Other"                   = "Don't know",
     "Other"                   = "Other party"
-  )
-  ) %>% count(partyid)
+  )) %>% count(partyid)
 
 
 gss_cat %>%

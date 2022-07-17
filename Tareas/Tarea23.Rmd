@@ -1,0 +1,136 @@
+---
+title: "Tarea23"
+author: "Yimmy Eman"
+date: "2022-07-17"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(lubridate)
+```
+
+# Pregunta 1
+
+Explica la diferencia entre if e ifelse(). Lee la documentación detalladamente y da dos o tres ejemplos que ilustren las diferencias principales de cada uno.
+
+La palabra clave if prueba una sola condición, mientras que ifelse() prueba cada elemento.
+
+# Pregunta 2
+Escribe una función de bienvenida que salude y diga “Buenos días”, “Buenas tardes”, o “Buenas noches”, según la hora del día. Piensa que tienes a tu disposición las funciones de la librería lubridate.
+
+```{r}
+greet <- function(time = lubridate::now()) {
+  hr <- lubridate::hour(time)
+  if (hr < 12) {
+    print("good morning")
+  } else if (hr < 17) {
+    print("good afternoon")
+  } else {
+    print("good evening")
+  }
+}
+greet()
+
+greet(ymd_h("2017-01-08:05"))
+
+greet(ymd_h("2017-01-08:13"))
+
+greet(ymd_h("2017-01-08:20"))
+
+```
+
+
+# Pregunta 3
+Implementa una función llamada juangabriel que tome un argumento como parámetro de entrada. En caso de ser divisible por cuatro debe devolver la palabra “juan”, en caso de ser divisible por siete debe devolver la palabra “gabriel” y en caso de ser divisible por cuatro y siete a la vez la palabra “juangabriel”. En todo otro caso devolverá el propio parámetro de entrada.
+
+```{r}
+juangabriel <- function(x) {
+  stopifnot(length(x) == 1)
+  stopifnot(is.numeric(x))
+  if (!(x %% 4) && !(x %% 7)) {
+    "juangabriel"
+  } else if (!(x %% 4)) {
+    "juan"
+  } else if (!(x %% 7)) {
+    "gabriel"
+  } else {
+    as.character(x)
+  }
+}
+juangabriel(28)
+
+juangabriel(20)
+
+juangabriel(49)
+
+juangabriel(2)
+
+```
+
+
+# Pregunta 4
+
+Usa la función cut() para simplificar la siguiente colección de if/else.
+
+
+¿Cómo tendrías que cambiar los parámetros de cut() si usaramos el comparador de < en lugar del de <=? ¿Qué otras ventajas tiene cut() para resolver este problema? (Pista: piensa qué pasa si tenemos varios valores en temp)
+
+# Pregunta 5
+Investiga qué ocurre si usamos switch() con valores numéricos
+
+En switch(n, ...), si n es numérico, devolverá el enésimo argumento de .... Esto significa que si n = 1, switch() devolverá el primer argumento en ..., si n = 2, el segundo, y así sucesivamente
+
+# Pregunta 6
+¿Qué hace este switch()? Investiga qué pasa si x es una 'e'?
+Experimenta primero y luego lee detalladamente la documentación.
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+switch(x, a=,
+b = "ab", c=,
+d = "cd"
+)
+```
+
+```{r}
+switcheroo <- function(x) {
+  switch(x,
+    a = ,
+    b = "ab",
+    c = ,
+    d = "cd"
+  )
+}
+switcheroo("a")
+switcheroo("b")
+switcheroo("c")
+switcheroo("d")
+switcheroo("e")
+switcheroo("f")
+```
+
+
+# Pregunta 7
+¿Qué hace la función commas(letters, collapse = "-")? Explica por qué crees que tiene dicho comportamiento.
+
+# Pregunta 8
+Sería bueno poder dar varios valores al argumento pad, por ejemplo rule("Título", pad = "-+"). ¿Por qué no funciona? ¿Cómo podríamos arreglarlo?
+
+```{r}
+rule <- function(..., pad = "-") {
+  title <- paste0(...)
+  width <- getOption("width") - nchar(title) - 5
+  cat(title, " ", str_dup(pad, width), "\n", sep = "")
+}
+```
+
+# Pregunta 9
+¿Qué hace el argumento trim a la función mean() y cuando se te ocurre que podría ser útil? 
+
+Los argumentos de recorte recortan una fracción de las observaciones de cada extremo del vector (es decir, el rango) antes de calcular la media. Esto es útil para calcular una medida de tendencia central que sea robusta frente a valores atípicos.
+
+# Pregunta 10
+El valor por defecto del argumento method de cor() es uno de los siguientes c("pearson", "kendall", "spearman"). Investiga las diferentes formas de calcular la correlación y cual es la más común.
+
+Significa que el argumento del método puede tomar uno de esos tres valores. El primer valor, "pearson", se utiliza de forma predeterminada.

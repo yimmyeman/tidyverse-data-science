@@ -1,0 +1,206 @@
+---
+title: "Tarea21"
+author: "Yimmy Eman"
+date: "2022-07-16"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(lubridate)
+library(nycflights13)
+```
+
+
+# Pregunta 1
+
+¿Qué ocurre si procesas un string con formato de fecha inválido?
+ymd(c("2018-06-08", "Antonio"))
+
+```{r}
+ymd(c("2018-06-08", "Antonio"))
+```
+
+# Pregunta 2
+
+¿Cuál es la función del argumento tzone en la función today(). ¿Es importante configurarlo? 
+
+```{r}
+today()
+
+today("UTC")
+
+today(tzone = "America/Caracas")
+```
+
+
+# Pregunta 3
+
+Usa la función adecuada de lubridate para procesar las siguientes:
+
+
+```{r}
+d1 <- "January 1, 2018"
+d2 <- "2015-May-19"
+d3 <- "08-Jun-2018"
+d4 <- c("August 19 (2015)", "July 1 (2015)") 
+d5 <- "12/30/18" # 30 de Diciembre de 2018
+```
+
+```{r}
+mdy(d1)
+ymd(d2)
+dmy(d3)
+mdy(d4)
+mdy(d5)
+```
+
+
+# Pregunta 4
+
+1. Indica cómo cambia la ditribución de horas de vuelo de un día a lo largo de todo el año.
+
+```{r}
+
+make_datetime_100 <- function(year, month, day, time) {
+  make_datetime(year, month, day, time %/% 100, time %% 100)
+}
+
+flights_dt <- flights %>%
+  filter(!is.na(dep_time), !is.na(arr_time)) %>%
+  mutate(
+    dep_time = make_datetime_100(year, month, day, dep_time),
+    arr_time = make_datetime_100(year, month, day, arr_time),
+    sched_dep_time = make_datetime_100(year, month, day, sched_dep_time),
+    sched_arr_time = make_datetime_100(year, month, day, sched_arr_time)
+  ) %>%
+  select(origin, dest, ends_with("delay"), ends_with("time"))
+
+flights_dt %>%
+  filter(!is.na(dep_time)) %>%
+  mutate(dep_hour = update(dep_time, yday = 1)) %>%
+  mutate(month = factor(month(dep_time))) %>%
+  ggplot(aes(dep_hour, color = month)) +
+  geom_freqpoly(binwidth = 60 * 60)
+
+
+```
+
+
+2. Compara dep_time, sched_dep_time y dep_delay. ¿Son constantes? Explica qué conclusiones puedes sacar.
+
+```{r}
+flights_dt %>%
+  mutate(dep_time_ = sched_dep_time + dep_delay * 60) %>%
+  filter(dep_time_ != dep_time) %>%
+  select(dep_time_, dep_time, sched_dep_time, dep_delay)
+```
+
+
+
+3. Compara air_time con la duración entre el tiempo de salida y de llegada. Explica tus conclusiones teniendo en cuenta la localización del aeropuerto.
+
+```{r}
+flights_dt %>%
+  mutate(
+    flight_duration = as.numeric(arr_time - dep_time),
+    air_time_mins = air_time,
+    diff = flight_duration - air_time_mins
+  ) %>%
+  select(origin, dest, flight_duration, air_time_mins, diff)
+```
+
+4. ¿Cómo cambia el promedio del retraso a lo largo del día? ¿Tienes que usar dep_time o sched_dep_time? ¿Por qué?
+
+```{r}
+flights_dt %>%
+  mutate(sched_dep_hour = hour(sched_dep_time)) %>%
+  group_by(sched_dep_hour) %>%
+  summarise(dep_delay = mean(dep_delay)) %>%
+  ggplot(aes(y = dep_delay, x = sched_dep_hour)) +
+  geom_point() +
+  geom_smooth()
+```
+
+
+5. ¿Qué día de la semana tenemos que volar para minimizar el riesgo de retraso?
+
+```{r}
+flights_dt %>%
+  mutate(sched_dep_hour = hour(sched_dep_time)) %>%
+  group_by(sched_dep_hour) %>%
+  summarise(dep_delay = mean(dep_delay)) %>%
+  ggplot(aes(y = dep_delay, x = sched_dep_hour)) +
+  geom_point() +
+  geom_smooth()
+```
+
+
+
+6. ¿En qué se parecen las distribuciones de diamonds$carat y de flights$sched_dep_time
+
+```{r}
+flights_dt %>%
+  mutate(wday = wday(dep_time, label = TRUE)) %>% 
+  group_by(wday) %>% 
+  summarize(ave_dep_delay = mean(dep_delay, na.rm = TRUE)) %>% 
+  ggplot(aes(x = wday, y = ave_dep_delay)) + 
+  geom_bar(stat = "identity")
+
+```
+
+# Pregunta 5
+
+Confirma la hipótesis de que los vuelos que salen más temprano en los minutos 20-30 y 50-60 son debidos a que hay vuelos programados que han salido antes de y media y de en punto. Ayúdate de una variable binaria para decidir si un vuelo ha sido o no retrasado.
+
+```{r}
+flights_dt %>% 
+  mutate(minute = minute(dep_time),
+         early = dep_delay < 0) %>% 
+  group_by(minute) %>% 
+  summarise(
+    early = mean(early, na.rm = TRUE),
+    n = n()) %>% 
+  ggplot(aes(minute, early)) +
+    geom_line()
+```
+
+
+# Pregunta 6
+
+1. Investiga por qué existe la función months() pero no dmonths()
+
+
+2. Explica para humanos corrientes la función days(overnight * 1) a alguien que acaba de iniciarse en R.
+
+La variable durante la noche es igual a VERDADERO o FALSO. Si es un vuelo nocturno, este se convierte en 1 día, y si no, entonces nocturno = 0, y no se agregan días a la fecha.
+
+3. Crea un vector de fechas que empiecen el primer día de cada mes de 2012.
+
+```{r}
+ymd("2012-01-01") + months(0:11)
+```
+
+4. Crea un vector de fechas que empiecen el primer día de cada mes del año actual.
+
+```{r}
+floor_date(today(), unit = "year") + months(0:11)
+```
+
+5. Escribe una función que dado un cumpleaños (una fecha) devuelva cuantos años tienes.
+
+```{r}
+age <- function(bday) {
+  (bday %--% today()) %/% years(1)
+}
+age(ymd("1988-11-27"))
+
+```
+
+6. ¿Por qué no funciona (today() %--% (today() + years(1)) / months(1) ?
+
+```{r}
+as.Date("2016-02-29") + years(1)
+```
+

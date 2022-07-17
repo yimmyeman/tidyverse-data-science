@@ -1,0 +1,116 @@
+---
+title: "Tarea24"
+author: "Yimmy Eman"
+date: "2022-07-17"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+
+# Pregunta 1
+
+Describe la diferencia entre is.finite(x) y !is.infinite(x). 
+
+```{r}
+x <- c(0, NA, NaN, Inf, -Inf)
+is.finite(x)
+!is.infinite(x)
+```
+
+# Pregunta 2
+Lee el código fuente de la función dplyr::near(). Para ello elimina los paréntesis () del final. ¿Cómo funciona y qué hace?
+
+```{r}
+dplyr::near
+```
+
+
+# Pregunta 3
+Un vector lógico puede tomar tres posibles valores. ¿Cuántos puede tomar un vector de enteros? ¿Y uno de doubles? Usa Google para investigar un poco la naturaleza de estos tipos de datos en R.
+
+Para vectores enteros, `R` usa una representación de 32 bits. Esto significa que puede representar hasta $2^32$ diferentes valores con números enteros. Uno de estos valores se reserva para NA_integer_. De la ayuda para enteros.
+ 
+# Pregunta 4
+Investiga qué función del paquete rear permite convertir un string en un vector lógico, de enteros o de doubles.
+
+```{r}
+parse_logical(c("TRUE", "FALSE", "1", "0", "true", "t", "NA"))
+```
+
+
+# Pregunta 5
+¿Qué nos dice la función mean(is.na(x)) acerca del vector x? ¿Y la función sum(!is.finite(x))? 
+
+El resultado de 0.286 es igual a 2/7 como se esperaba. Hay siete elementos en el vector x y dos elementos que son NA o NaN.
+
+La expresión sum(!is.finite(x)) calcula el número de elementos en el vector que son iguales a los que faltan (NA), no son un número (NaN) o infinito (Inf).
+
+```{r}
+x <- c(-Inf, -1, 0, 1, Inf, NA, NaN)
+mean(is.na(x))
+sum(!is.finite(x))
+```
+
+# Pregunta 6
+Lee detalladamente la documentación de is.vector(). ¿Para qué puede usarse? ¿Por qué la función is.atomic() no coincide con la declaración de vectores atómicos que hemos dado inicialmente?
+
+La función is.vector() solo verifica si el objeto no tiene más atributos que nombres. 
+
+# Pregunta 7
+Compara y contrasta las funciones setNames() y purrr::set_names(). 
+
+```{r}
+setNames(1:4, c("a", "b", "c", "d"))
+purrr::set_names(1:4, c("a", "b", "c", "d"))
+```
+
+
+# Pregunta 8
+Crea una función que a partir de un vector de entrada devuelva:
+- Solo los números impares (y por supuesto no los NAs). 
+- Todos los elementos excepto el último
+- Los elementos en posiciones impares
+- El último valor (¿debes usar [ o [[?)
+
+```{r}
+
+```
+
+
+
+# Pregunta 9
+¿Por qué x[-which(x > 0)] no es lo mismo que x[x <= 0]? 
+
+Estas expresiones difieren en la forma en que tratan los valores perdidos. Probemos cómo funcionan creando un vector con números enteros positivos y negativos, y valores especiales (NA, NaN e Inf). Estos valores deben abarcar todos los tipos relevantes de valores que encontrarían estas expresiones.
+
+```{r}
+x <- c(-1:1, Inf, -Inf, NaN, NA)
+x[-which(x > 0)]
+
+x[x <= 0]
+
+```
+
+
+# Pregunta 10
+¿Qué ocurre cuando haces un subconjunto con un entero superior a la longitud del vector?
+
+```{r}
+x <- c(a = 10, b = 20)
+x[3]
+
+```
+
+# Pregunta 11
+¿Qué ocurre cuando haces un subconjunto con un nombre de variable que no existe en el vector?
+
+Error in x[["c"]] : subscript out of bounds
+```{r}
+#x[["c"]]
+
+```
+

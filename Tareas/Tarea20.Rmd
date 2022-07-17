@@ -1,0 +1,133 @@
+---
+title: "Tarea20"
+output: pdf_document
+author: Yimmy Eman
+date: "2022-07-16"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(forcats)
+```
+
+# Pregunta 1
+
+1. Explora la distribución de rincome (reported income). ¿Por qué el barchart es difícil de interpretar y qué podrías hacer para mejorar la visualización del dato?
+
+```{r}
+gss_cat %>% 
+  ggplot(aes(rincome)) +
+  geom_bar()
+
+# Imposible visualizar la observación.
+```
+
+```{r}
+# Aplicando un coord_flip para girar el gráfico mejoraría la lectura
+
+gss_cat %>% 
+  ggplot(aes(rincome)) +
+  geom_bar() +
+  coord_flip() +
+  labs(y = "Respuestas")
+```
+
+2. Identifica la religión relig más común del dataset. Identifica también el partido partyid más común del dataset.
+
+```{r}
+(gss_cat %>% 
+  count(relig) %>% 
+  arrange(desc(n)))[1,]
+
+(gss_cat %>% 
+  count(partyid) %>% 
+  arrange(desc(n)))[1,]
+
+```
+
+
+# Pregunta 2
+
+1. Investiga algunos números raros del campo tvhours. Deduce si la media es el mejor estadístico para resumir información de dicho campo.
+
+```{r}
+summary(gss_cat$tvhours)
+
+# Algunos número son bastantes altos, es raro ver una persona 24 horas seguida viendo tv
+
+gss_cat %>% 
+  filter(!is.na(tvhours)) %>% # Quitemos los valores NA
+  ggplot(aes(tvhours))+
+  geom_histogram(binwidth = 1)
+```
+
+2. Para cada factor de gss_cat identifica si el orden de los niveles es arbitrario o está bien definido.
+
+```{r}
+# Primero vemos los que son factores
+str(gss_cat)
+```
+
+```{r}
+# Entre lo que son factores tenemos:
+levels(gss_cat$marital)
+levels(gss_cat$race) # No hay orden
+levels(gss_cat$rincome) # De mayor a menor
+levels(gss_cat$partyid) # están ordenados a partir de más republicano a más demócrata.
+levels(gss_cat$relig) # No tiene orden
+levels(gss_cat$denom)
+```
+
+# Pregunta 3
+1. Identifica cómo han cambiado las proporciones de los tres partidos políticos Democrat, Republican, y Independent a lo largo del tiempo.
+
+```{r}
+gss_cat %>%
+  mutate(
+    partyid =
+      fct_collapse(partyid,
+        other = c("No answer", "Don't know", "Other party"),
+        rep = c("Strong republican", "Not str republican"),
+        ind = c("Ind,near rep", "Independent", "Ind,near dem"),
+        dem = c("Not str democrat", "Strong democrat")
+      )
+  ) %>%
+  count(year, partyid) %>%
+  group_by(year) %>%
+  mutate(p = n / sum(n)) %>%
+  ggplot(aes(
+    x = year, y = p,
+    colour = fct_reorder2(partyid, year, p)
+  )) +
+  geom_point() +
+  geom_line() +
+  labs(colour = "Party ID.")
+```
+
+
+2. ¿Cómo podríamos reducir el factor rincome en un conjunto menor de categorías?
+
+```{r}
+library("stringr")
+gss_cat %>%
+  mutate(
+    rincome =
+      fct_collapse(
+        rincome,
+        `Unknown` = c("No answer", "Don't know", "Refused", "Not applicable"),
+        `Lt $5000` = c("Lt $1000", str_c(
+          "$", c("1000", "3000", "4000"),
+          " to ", c("2999", "3999", "4999")
+        )),
+        `$5000 to 10000` = str_c(
+          "$", c("5000", "6000", "7000", "8000"),
+          " to ", c("5999", "6999", "7999", "9999")
+        )
+      )
+  ) %>%
+  ggplot(aes(x = rincome)) +
+  geom_bar() +
+  coord_flip()
+```
+
